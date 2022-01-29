@@ -7,6 +7,7 @@ using TopDownRpg.Engine.Objects;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Linq;
+using TopDownRpg.Engine.Input;
 
 namespace TopDownRpg.Engine.State
 {
@@ -21,25 +22,31 @@ namespace TopDownRpg.Engine.State
 
         private readonly List<BaseGameObject> _gameObjects = new List<BaseGameObject>();
 
+        protected InputManager InputManager { get; set; }
 
-        public BaseGameState(ContentManager contentManager, int viewportWidth, int viewportHeight)
+        public void Initialize(ContentManager contentManager, int viewportWidth, int viewportHeight)
         {
             _contentManager = contentManager;
             _viewportWidth = viewportWidth;
             _viewportHeight = viewportHeight;
+
+            SetInputManager();
         }
 
         public abstract void LoadContent();
-
-        public abstract void HandleContent(GameTime gameTime);
-
-        public abstract void UnLoadContent();
-
+        
+        public abstract void HandleInput(GameTime gameTime);
         public abstract void UpdateGameState(GameTime gameTime);
+
 
         public event EventHandler<BaseGameState> OnStateSwitched;
         public event EventHandler<BaseGameStateEvent> OnEventNotification;
+        protected abstract void SetInputManager();
 
+        public void UnLoadContent()
+        {
+            _contentManager.Unload();
+        }
         public void Update(GameTime gameTime)
         {
             UpdateGameState(gameTime);
@@ -71,6 +78,8 @@ namespace TopDownRpg.Engine.State
                 }
             }
         }
+
+
         /// <summary>
         /// This method is called to switch from the active gamestate to the new specified Game State
         /// </summary>
