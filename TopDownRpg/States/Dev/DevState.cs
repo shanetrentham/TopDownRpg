@@ -11,11 +11,14 @@ namespace TopDownRpg.States.Dev
     public class DevState : BaseGameState
     {
 
-        private const string PlayerTexture = "Player/Right/WarriorRightIdle";
+        private const string PlayerLeftTexture = "Player/Left/PlayerLeftSheet";
+        private const string PlayerRightTexture = "Player/Right/PlayerRightSheet";
+        private const string PlayerUpTexture = "Player/Up/PlayerUpSheet";
+        private const string PlayerDownTexture = "Player/Down/PlayerDownSheet";
         private PlayerSprite _playerSprite;
         public override void LoadContent()
         {
-            _playerSprite = new PlayerSprite(LoadTexture(PlayerTexture));
+            _playerSprite = new PlayerSprite(LoadTexture(PlayerLeftTexture), LoadTexture(PlayerRightTexture), LoadTexture(PlayerUpTexture), LoadTexture(PlayerDownTexture));
             var playerXPos = _viewportWidth / 2 - _playerSprite.Width / 2;
             var playerYPos = _viewportHeight / 2 - _playerSprite.Height / 2;
             _playerSprite.Position = new Vector2(playerXPos, playerYPos);
@@ -52,7 +55,7 @@ namespace TopDownRpg.States.Dev
 
         public override void UpdateGameState(GameTime gameTime)
         {
-            //_playerSprite.Update();
+            _playerSprite.Update(gameTime);
         }
 
         protected override void SetInputManager()
